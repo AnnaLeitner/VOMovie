@@ -1,31 +1,25 @@
-package com.example.vomovie.home
+package com.example.vomovie.screens.Favs
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.vomovie.models.Movie
-
 import com.example.vomovie.models.getMovies
-import com.example.vomovie.widgets.HorizontalScrollImages
 import com.example.vomovie.widgets.MovieRow
 
-@Preview(showBackground = true)
 @Composable
-fun DetailScreen(
-    navController: NavController = rememberNavController(),
-    movieId: String? = "t0499549"
-    ){
+fun FavScreen(navController: NavController = rememberNavController()){
 
-    val movie = movieFilter(movieId = movieId)
-
+    //val movie = movieFilter(movieId = movieId)
 
     Scaffold(
         topBar = {
@@ -39,35 +33,36 @@ fun DetailScreen(
                         }
                     )
                     Spacer(modifier = Modifier.width(20.dp))
-                    Text(text = movie.title)
+                    Text(text = "My Favourie Movies")
                 }
             }
         }) {
-        MainContent(movie = movie)
+        MainContent()
+
     }
+
+
 }
 
 @Composable
-fun MainContent(movie: Movie){
+fun MainContent(movies: List<Movie> = getMovies().take(2)){
 
-    Surface(modifier = Modifier
-        .fillMaxHeight()
-        .fillMaxWidth()) {
-        Column() {
-            MovieRow(movie = movie)
+    LazyColumn{
+        items(items = movies){ movie ->
+            Surface(modifier = Modifier
+                .fillMaxHeight()
+                .fillMaxWidth()) {
+                Column() {
+                    MovieRow(movie = movie)
 
-            Spacer(modifier = Modifier.height(8.dp))
-            Divider()
-            Text(text = "${movie.title}", style = MaterialTheme.typography.h5)
+                   // Spacer(modifier = Modifier.height(8.dp))
+                }
 
-            HorizontalScrollImages(movie = movie)
-
+            }
+            //navController.navigate(route = MovieScreens.FavScreen.name)
         }
-
     }
 
-}
 
-fun movieFilter(movieId: String?) : Movie {
-    return getMovies().filter {movie -> movie.id == movieId }[0]
+
 }

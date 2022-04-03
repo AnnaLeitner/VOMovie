@@ -29,9 +29,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-
-                    MovieNav()
-
+            //MyAppBar{
+                MovieNav()
+            //}
 
             }
 
@@ -40,27 +40,20 @@ class MainActivity : ComponentActivity() {
 
 
 //New
-/*
+
 @Composable
 fun MyAppBar(content: @Composable () -> Unit){
     VOMovieTheme {
         content
     }
 }
-*/
 
 
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    //MyApp {
-        MovieNav()
-
-
-    //}
+    VOMovieTheme{
+        HomeScreen()
+    }
 }
