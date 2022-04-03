@@ -6,6 +6,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -53,12 +54,15 @@ fun MainContent(movie: Movie){
     Surface(modifier = Modifier
         .fillMaxHeight()
         .fillMaxWidth()) {
-        Column() {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
             MovieRow(movie = movie)
 
             Spacer(modifier = Modifier.height(8.dp))
             Divider()
-            Text(text = "${movie.title}", style = MaterialTheme.typography.h5)
+            Text(text = "Movie Images",
+                //textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.h5
+            )
 
             HorizontalScrollImages(movie = movie)
 

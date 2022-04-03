@@ -29,7 +29,7 @@ import com.example.vomovie.models.Movie
 import com.example.vomovie.models.getMovies
 
 
-@Preview(showBackground = true)
+
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MovieRow(
@@ -149,7 +149,7 @@ fun HorizontalScrollImages (movie: Movie = getMovies()[0]){
             Card(
                 modifier = Modifier
                     .padding(12.dp)
-                    .size(240.dp),
+                    .height(250.dp),
                 elevation = 4.dp
             ) {
                 AsyncImage(
@@ -157,7 +157,8 @@ fun HorizontalScrollImages (movie: Movie = getMovies()[0]){
                     .data(image)
                     //.crossfade(true)
                     .build(),
-                    contentDescription = "Movie Images"
+                    contentDescription = "Movie Images",
+                    modifier = Modifier.clip(RoundedCornerShape(5.dp))
                 )
 
             }
