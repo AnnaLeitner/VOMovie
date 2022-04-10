@@ -10,14 +10,17 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.vomovie.models.Movie
 import com.example.vomovie.models.getMovies
+import com.example.vomovie.viewModels.MovieViwModel
 import com.example.vomovie.widgets.MovieRow
 
 @Composable
-fun FavScreen(navController: NavController = rememberNavController()){
+fun FavScreen(navController: NavController = rememberNavController(),
+              myViewModel: MovieViwModel = viewModel()){
 
     //val movie = movieFilter(movieId = movieId)
 

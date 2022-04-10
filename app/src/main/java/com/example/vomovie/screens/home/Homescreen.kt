@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 
@@ -18,11 +19,14 @@ import com.example.vomovie.models.Movie
 import com.example.vomovie.models.getMovies
 import com.example.vomovie.nav.MovieScreens
 import com.example.vomovie.ui.theme.VOMovieTheme
+import com.example.vomovie.viewModels.MovieViwModel
 import com.example.vomovie.widgets.MovieRow
 
 
 @Composable
-fun HomeScreen(navController: NavController = rememberNavController()){
+fun HomeScreen(
+    navController: NavController = rememberNavController(), myViewModel: MovieViwModel = viewModel()){
+
     MyAppBar(navController = navController) {
         MainContent(navController = navController)
     }

@@ -10,11 +10,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.vomovie.models.Movie
 
 import com.example.vomovie.models.getMovies
+import com.example.vomovie.viewModels.MovieViwModel
 import com.example.vomovie.widgets.HorizontalScrollImages
 import com.example.vomovie.widgets.MovieRow
 
@@ -22,7 +24,8 @@ import com.example.vomovie.widgets.MovieRow
 @Composable
 fun DetailScreen(
     navController: NavController = rememberNavController(),
-    movieId: String? = "t0499549"
+    movieId: String? = "t0499549",
+    myViewModel: MovieViwModel = viewModel()
     ){
 
     val movie = movieFilter(movieId = movieId)

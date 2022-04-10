@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.*
@@ -90,6 +91,11 @@ fun MovieRow(
                     text = "Released Year: ${movie.year}",
                     style = MaterialTheme.typography.caption
                 )
+
+                Icon(imageVector = Icons.Default.Favorite,
+                    contentDescription = "Favorites",
+                    modifier = Modifier.padding(4.dp))
+
                 if (showDesc) {
                     AnimatedVisibility(
                         visible = showDesc,
