@@ -19,28 +19,51 @@ import com.example.vomovie.models.Movie
 import com.example.vomovie.models.getMovies
 import com.example.vomovie.nav.MovieScreens
 import com.example.vomovie.ui.theme.VOMovieTheme
-import com.example.vomovie.viewModels.MovieViwModel
+import com.example.vomovie.viewModels.MovieViewModel
+import com.example.vomovie.widgets.FavIcon
 import com.example.vomovie.widgets.MovieRow
 
 
 @Composable
 fun HomeScreen(
-    navController: NavController = rememberNavController(), myViewModel: MovieViwModel = viewModel()){
+    navController: NavController = rememberNavController(),
+    movieViewModel: MovieViewModel = viewModel()
+) {
 
     MyAppBar(navController = navController) {
-        MainContent(navController = navController)
+        MainContent(navController = navController, movieViewModel = movieViewModel)
     }
 }
 
 @Composable
-fun MainContent(navController: NavController, movies: List<Movie> = getMovies()){
-    LazyColumn{
-        items(items = movies){ movie ->
-            MovieRow( movie = movie){ movieId ->// mit lambda habe ich zugriff auf id
-                Log.d("MainContent", "My callback value: $movieId")
-                navController.navigate(route = MovieScreens.DetailScreen.name + "/$movieId")
-            }
-            //navController.navigate(route = MovieScreens.FavScreen.name)
+fun MainContent(
+    navController: NavController,
+    movies: List<Movie> = getMovies(),
+    movieViewModel: MovieViewModel
+) {
+    LazyColumn {
+        items(movies) { movie ->
+            MovieRow(movie,
+                onItemClick = { movieId ->// mit lambda habe ich zugriff auf id
+
+                    Log.d("MainContent", "My callback value: $movieId")
+                    navController.navigate(route = MovieScreens.DetailScreen.name + "/$movieId")
+                },
+                content = {
+                    FavIcon(movie = movie, isFavItem = movieViewModel.checkMovie(movie),
+
+                        onFavClick = { favmovie ->
+                            if (!movieViewModel.checkMovie(favmovie)) {
+                                movieViewModel.addMovie(favmovie)
+
+                                //return@MovieRow true
+                            } else {
+                                movieViewModel.removeMovie(favmovie)
+                                //return@MovieRow false
+                            }
+                        }
+                    )
+                })
         }
     }
 
@@ -60,7 +83,7 @@ fun MyAppBar(navController: NavController, content: @Composable () -> Unit) {
                         Icon(imageVector = Icons.Default.MoreVert, contentDescription = "More")
                     }
                     DropdownMenu(expanded = showFavs, onDismissRequest = { showFavs = false }) {
-                        DropdownMenuItem(onClick = { navController.navigate(route = MovieScreens.FavScreen.name ) }) {
+                        DropdownMenuItem(onClick = { navController.navigate(route = MovieScreens.FavScreen.name) }) {
                             Row {
                                 Icon(
                                     imageVector = Icons.Default.Favorite,

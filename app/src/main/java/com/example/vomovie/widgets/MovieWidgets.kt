@@ -1,9 +1,6 @@
 package com.example.vomovie.widgets
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.*
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -14,15 +11,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -30,22 +28,37 @@ import com.example.vomovie.models.Movie
 import com.example.vomovie.models.getMovies
 
 
-
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MovieRow(
-             movie: Movie = getMovies()[0],
-             onItemClick: (String) -> Unit = {}) {
+    movie: Movie,
+    onItemClick: (String) -> Unit = {},
+    //onFavClick: (Movie) -> Unit = { /*false*/ },
+    content: @Composable () -> Unit = {},
+    //favBoolean: Boolean,
+    //showFavIcon: Boolean,
+    //isFavItem: Boolean
+    // content: @Composable() -> Unit = {}
+
+) {
 
     var showDesc by remember { // show Description
         mutableStateOf(false)
     }
+    var visible by remember { // show Description
+        mutableStateOf(false)
+    }
+    var fav by remember { // show Description
+        mutableStateOf(false)
+    }
+
 
     Card(
         modifier = Modifier
             .padding(4.dp)
             .fillMaxWidth()
             .heightIn(min = 130.dp) // hoehe mind 130.dp kann auch mehr sein
+            .animateContentSize()
             .clickable {
                 onItemClick(movie.id)
             },
@@ -66,16 +79,11 @@ fun MovieRow(
                         .build(),
                     contentDescription = "Profil Pic",
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.size(64.dp).clip(CircleShape)
+                    modifier = Modifier
+                        .size(64.dp)
+                        .clip(CircleShape)
                 )
             }
-
-
-            /*
-            AsyncImage(
-                model = movie.images[0],
-                contentDescription = null
-            )*/
 
             Column {
 
@@ -92,9 +100,7 @@ fun MovieRow(
                     style = MaterialTheme.typography.caption
                 )
 
-                Icon(imageVector = Icons.Default.Favorite,
-                    contentDescription = "Favorites",
-                    modifier = Modifier.padding(4.dp))
+
 
                 if (showDesc) {
                     AnimatedVisibility(
@@ -143,15 +149,54 @@ fun MovieRow(
                     )
                 }
             }
+            content()
         }
     }
 }
 
 @Composable
-fun HorizontalScrollImages (movie: Movie = getMovies()[0]){
-    LazyRow{
-        items(movie.images){ image ->
-            
+fun FavIcon(movie: Movie, onFavClick: (Movie) -> Unit = {}, isFavItem: Boolean) {
+
+    Surface(
+        modifier = Modifier
+            .padding(10.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            horizontalAlignment = Alignment.End
+        ) {
+            IconButton(onClick = {
+                onFavClick(movie)
+            }) {
+                if (!isFavItem) {
+                    Icon(
+                        imageVector = Icons.Default.FavoriteBorder,
+                        contentDescription = "Favorites",
+                        //modifier = Modifier.clickable { onFavClick(movie); fav = !fav },
+                        tint = Color.Magenta
+                    )
+                } else {
+                    Icon(
+                        imageVector = Icons.Default.Favorite,
+                        contentDescription = "Favorites",
+                        //modifier = Modifier.clickable {},
+                        tint = Color.Magenta
+                    )
+                }
+            }
+        }
+
+    }
+}
+
+
+@Composable
+fun HorizontalScrollImages(movie: Movie = getMovies()[0]) {
+    LazyRow {
+        items(movie.images) { image ->
+
             Card(
                 modifier = Modifier
                     .padding(12.dp)
@@ -160,9 +205,9 @@ fun HorizontalScrollImages (movie: Movie = getMovies()[0]){
             ) {
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
-                    .data(image)
-                    //.crossfade(true)
-                    .build(),
+                        .data(image)
+                        //.crossfade(true)
+                        .build(),
                     contentDescription = "Movie Images",
                     modifier = Modifier.clip(RoundedCornerShape(5.dp))
                 )

@@ -4,30 +4,34 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import com.example.vomovie.models.Movie
 
-class MovieViwModel : ViewModel(){
-    private var _favMovies = mutableStateListOf<Movie>()
-    val favMovie : List<Movie>
-        get() = _favMovies
+class MovieViewModel : ViewModel() {
+    private var _favouriteMovies = mutableStateListOf<Movie>()
+    val favouriteMovie: List<Movie>
+        get() = _favouriteMovies
 
-    fun addMovie(movie: Movie){
-        if(!exists(movie = movie)) {
-            _favMovies.add(movie)
+    fun addMovie(movie: Movie) {
+        if (!exists(movie = movie)) {
+            _favouriteMovies.add(movie)
         }
     }
-    fun removeMovie(movie:Movie){
-        _favMovies.remove(movie)
-    }
-    fun getAllMovies(): List<Movie>{
-        return _favMovies
-    }
-    fun checkMovie(movie: Movie){
-        _favMovies.contains(movie)
+
+    fun removeMovie(movie: Movie) {
+        _favouriteMovies.remove(movie)
     }
 
-    private fun exists(movie : Movie) : Boolean{
-        return _favMovies.any { m -> m.id == movie.id }
+    fun getAllMovies(): List<Movie> {
+        return _favouriteMovies
     }
-    fun isFav(movie: Movie) : Boolean{
+
+    fun checkMovie(movie: Movie): Boolean {
+        return _favouriteMovies.contains(movie)
+    }
+
+    private fun exists(movie: Movie): Boolean {
+        return _favouriteMovies.any { m -> m.id == movie.id }
+    }
+
+    fun isFav(movie: Movie): Boolean {
         return exists(movie)
     }
 }

@@ -15,18 +15,21 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.vomovie.models.Movie
 import com.example.vomovie.models.getMovies
-import com.example.vomovie.viewModels.MovieViwModel
+import com.example.vomovie.nav.MovieScreens
+import com.example.vomovie.viewModels.MovieViewModel
 import com.example.vomovie.widgets.MovieRow
 
 @Composable
-fun FavScreen(navController: NavController = rememberNavController(),
-              myViewModel: MovieViwModel = viewModel()){
+fun FavScreen(
+    navController: NavController = rememberNavController(),
+    movieViewModel: MovieViewModel = viewModel()
+) {
 
-    //val movie = movieFilter(movieId = movieId)
+    val movies = movieViewModel.favouriteMovie
 
     Scaffold(
         topBar = {
-            TopAppBar(elevation = 3.dp){
+            TopAppBar(elevation = 3.dp) {
                 Row {
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
@@ -40,32 +43,36 @@ fun FavScreen(navController: NavController = rememberNavController(),
                 }
             }
         }) {
-        MainContent()
-
+        MainContent(movies = movies, navController = navController, movieViewModel = movieViewModel)
     }
-
 
 }
 
 @Composable
-fun MainContent(movies: List<Movie> = getMovies().take(2)){
+fun MainContent(
+    movies: List<Movie>,
+    navController: NavController,
+    movieViewModel: MovieViewModel
+) {
 
-    LazyColumn{
-        items(items = movies){ movie ->
-            Surface(modifier = Modifier
-                .fillMaxHeight()
-                .fillMaxWidth()) {
-                Column() {
-                    MovieRow(movie = movie)
+    Surface(
+        modifier = Modifier
+            .fillMaxHeight()
+            .fillMaxWidth()
+    ) {
+        LazyColumn {
+            items(movies) { movie ->
+                MovieRow(movie,
+                    onItemClick = { movieId ->
+                        navController.navigate(route = MovieScreens.DetailScreen.name + "/$movieId")
+                    })
+                Spacer(modifier = Modifier.height(28.dp))
 
-                   // Spacer(modifier = Modifier.height(8.dp))
-                }
 
             }
             //navController.navigate(route = MovieScreens.FavScreen.name)
         }
     }
-
 
 
 }

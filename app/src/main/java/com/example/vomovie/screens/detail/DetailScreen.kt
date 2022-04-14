@@ -1,5 +1,6 @@
 package com.example.vomovie.home
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -16,24 +17,26 @@ import androidx.navigation.compose.rememberNavController
 import com.example.vomovie.models.Movie
 
 import com.example.vomovie.models.getMovies
-import com.example.vomovie.viewModels.MovieViwModel
+import com.example.vomovie.nav.MovieScreens
+import com.example.vomovie.viewModels.MovieViewModel
+import com.example.vomovie.widgets.FavIcon
 import com.example.vomovie.widgets.HorizontalScrollImages
 import com.example.vomovie.widgets.MovieRow
 
-@Preview(showBackground = true)
+
 @Composable
 fun DetailScreen(
     navController: NavController = rememberNavController(),
     movieId: String? = "t0499549",
-    myViewModel: MovieViwModel = viewModel()
-    ){
+    movieViewModel: MovieViewModel
+) {
 
     val movie = movieFilter(movieId = movieId)
 
 
     Scaffold(
         topBar = {
-            TopAppBar(elevation = 3.dp){
+            TopAppBar(elevation = 3.dp) {
                 Row {
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
@@ -47,22 +50,39 @@ fun DetailScreen(
                 }
             }
         }) {
-        MainContent(movie = movie)
+        MainContent(movie = movie, movieViewModel = movieViewModel)
     }
 }
 
 @Composable
-fun MainContent(movie: Movie){
+fun MainContent(movie: Movie, movieViewModel: MovieViewModel) {
 
-    Surface(modifier = Modifier
-        .fillMaxHeight()
-        .fillMaxWidth()) {
+    Surface(
+        modifier = Modifier
+            .fillMaxHeight()
+            .fillMaxWidth()
+    ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            MovieRow(movie = movie)
+            MovieRow(movie = movie,
+                content = {
+                    FavIcon(movie = movie, isFavItem = movieViewModel.checkMovie(movie),
+                        onFavClick = { favmovie ->
+                            if (!movieViewModel.checkMovie(favmovie)) {
+                                movieViewModel.addMovie(favmovie)
+
+                                //return@MovieRow true
+                            } else {
+                                movieViewModel.removeMovie(favmovie)
+                                //return@MovieRow false
+                            }
+
+                        })
+                })
 
             Spacer(modifier = Modifier.height(8.dp))
             Divider()
-            Text(text = "Movie Images",
+            Text(
+                text = "Movie Images",
                 //textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.h5
             )
@@ -75,6 +95,6 @@ fun MainContent(movie: Movie){
 
 }
 
-fun movieFilter(movieId: String?) : Movie {
-    return getMovies().filter {movie -> movie.id == movieId }[0]
+fun movieFilter(movieId: String?): Movie {
+    return getMovies().filter { movie -> movie.id == movieId }[0]
 }
