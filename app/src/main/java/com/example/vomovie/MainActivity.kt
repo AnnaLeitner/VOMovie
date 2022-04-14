@@ -21,15 +21,11 @@ class MainActivity : ComponentActivity() {
         val movies = getMovies()
         val vm: MovieViewModel by viewModels()
         setContent {
-
-            //MyAppBar{
             MovieNav()
-            //}
-
         }
 
     }
-
+    /*
     override fun onStart() {
         super.onStart()
         Log.d("mainactivity", "onstart called")
@@ -49,10 +45,8 @@ class MainActivity : ComponentActivity() {
         super.onDestroy()
         Log.i("MainActivity", "on Destroy")
     }
+    */
 }
-
-
-//New
 
 @Composable
 fun MyAppBar(content: @Composable () -> Unit) {

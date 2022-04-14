@@ -19,19 +19,11 @@ class MovieViewModel : ViewModel() {
         _favouriteMovies.remove(movie)
     }
 
-    fun getAllMovies(): List<Movie> {
-        return _favouriteMovies
-    }
-
-    fun checkMovie(movie: Movie): Boolean {
+    fun isMovieFav(movie: Movie): Boolean {
         return _favouriteMovies.contains(movie)
     }
 
     private fun exists(movie: Movie): Boolean {
         return _favouriteMovies.any { m -> m.id == movie.id }
-    }
-
-    fun isFav(movie: Movie): Boolean {
-        return exists(movie)
     }
 }

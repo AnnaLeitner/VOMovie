@@ -33,25 +33,13 @@ import com.example.vomovie.models.getMovies
 fun MovieRow(
     movie: Movie,
     onItemClick: (String) -> Unit = {},
-    //onFavClick: (Movie) -> Unit = { /*false*/ },
-    content: @Composable () -> Unit = {},
-    //favBoolean: Boolean,
-    //showFavIcon: Boolean,
-    //isFavItem: Boolean
-    // content: @Composable() -> Unit = {}
+    content: @Composable () -> Unit = {}
 
 ) {
 
     var showDesc by remember { // show Description
         mutableStateOf(false)
     }
-    var visible by remember { // show Description
-        mutableStateOf(false)
-    }
-    var fav by remember { // show Description
-        mutableStateOf(false)
-    }
-
 
     Card(
         modifier = Modifier
@@ -99,8 +87,6 @@ fun MovieRow(
                     text = "Released Year: ${movie.year}",
                     style = MaterialTheme.typography.caption
                 )
-
-
 
                 if (showDesc) {
                     AnimatedVisibility(
@@ -181,7 +167,6 @@ fun FavIcon(movie: Movie, onFavClick: (Movie) -> Unit = {}, isFavItem: Boolean) 
                     Icon(
                         imageVector = Icons.Default.Favorite,
                         contentDescription = "Favorites",
-                        //modifier = Modifier.clickable {},
                         tint = Color.Magenta
                     )
                 }

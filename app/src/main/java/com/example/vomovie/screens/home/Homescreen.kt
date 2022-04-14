@@ -14,7 +14,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-
 import com.example.vomovie.models.Movie
 import com.example.vomovie.models.getMovies
 import com.example.vomovie.nav.MovieScreens
@@ -50,16 +49,13 @@ fun MainContent(
                     navController.navigate(route = MovieScreens.DetailScreen.name + "/$movieId")
                 },
                 content = {
-                    FavIcon(movie = movie, isFavItem = movieViewModel.checkMovie(movie),
+                    FavIcon(movie = movie, isFavItem = movieViewModel.isMovieFav(movie),
 
                         onFavClick = { favmovie ->
-                            if (!movieViewModel.checkMovie(favmovie)) {
+                            if (!movieViewModel.isMovieFav(favmovie)) {
                                 movieViewModel.addMovie(favmovie)
-
-                                //return@MovieRow true
                             } else {
                                 movieViewModel.removeMovie(favmovie)
-                                //return@MovieRow false
                             }
                         }
                     )
@@ -103,8 +99,6 @@ fun MyAppBar(navController: NavController, content: @Composable () -> Unit) {
         }) {
 
             content()
-            /*val movies = getMovies()
-            MainContent(movies)*/
         }
     }
 }
